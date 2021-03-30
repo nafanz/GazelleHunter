@@ -1,5 +1,5 @@
 import re
-from web_tor import driver
+from web import driver
 import vk as api_key
 import sqlite3
 from db import count_is_null

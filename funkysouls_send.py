@@ -1,6 +1,7 @@
 import time
+from web_tor import driver
+from web_def import authorization
 from selenium.common.exceptions import ElementNotInteractableException
-from web_tor import driver, authorization
 from db import select_one_user_to_send, successfully_sent, count_is_null
 from credentials import funkysouls, question, trackers
 

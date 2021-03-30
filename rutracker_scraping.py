@@ -4,9 +4,8 @@ import sqlite3
 from credentials import rutracker
 from db import count_is_null
 
-t = 5860392
-
-r = requests.get(f"{rutracker['url']}/forum/viewtopic.php?t={t}")
+topic = 5860392
+r = requests.get(f"{rutracker['url']}/forum/viewtopic.php?t={topic}")
 
 # Преобразуем данные для парсинга
 parser = html.fromstring(r.text)
@@ -19,7 +18,7 @@ pg = set()
 # Обрезаем list оставляя только номера страниц
 # Так как пагинация есть сверху и снизу страницы мы оставляем только уникальные значения
 for item in pagination:
-    start = item.split(f'viewtopic.php?t={t}&start=')
+    start = item.split(f'viewtopic.php?t={topic}&start=')
     for i in start:
         if i is not '':
             pg.add(i)
@@ -35,7 +34,7 @@ users = {}
 # Каждый проход цикла увеличивает значение count на 30
 # Выполняем цикл пока значение count меньше или равно pagination
 while count <= pagination_max:
-    r = requests.get(f"{rutracker['url']}/forum/viewtopic.php?t={t}&start={count}")
+    r = requests.get(f"{rutracker['url']}/forum/viewtopic.php?t={topic}&start={count}")
     parser = html.fromstring(r.text)
     id_all = parser.xpath('//a[2][@class="txtb"]/@href')
     username = parser.xpath('//tbody/tr[1]/td[1]/p[1]/text()')

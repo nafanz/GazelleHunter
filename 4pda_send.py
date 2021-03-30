@@ -1,12 +1,8 @@
 import time
+from web import driver
 from selenium.common.exceptions import NoSuchElementException
 from db import select_one_user_to_send, successfully_sent, count_is_null
 from credentials import pda, question, trackers
-from selenium import webdriver
-
-driver = webdriver.Chrome(
-    executable_path=r'/home/nafanz/Документы/git/github/Notes/home/selenium/chromedriver'
-)
 
 # Переходим на страницу авторизации
 driver.get(f"{pda['url']}/forum/index.php?act=auth")
