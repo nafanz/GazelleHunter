@@ -1,0 +1,6 @@
+lxml
+praw
+py-vkontakte
+requests
+selenium
+vk_messages
