@@ -1,7 +1,6 @@
 import time
 from selenium.common.exceptions import NoSuchElementException
-from web import driver
-from web_def import authorization
+from web_def import driver, authorization
 from db import select_one_user_to_send, successfully_sent, sending_error, count_is_null
 from credentials import rutracker, question, trackers
 

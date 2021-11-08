@@ -8,8 +8,8 @@ from credentials import vk, groups
 driver.get(f"https://oauth.vk.com/authorize?client_id={vk['application']}]&response_type=token")
 
 # Для удобства сохраняем XPath формы авторизации
-username = '//*[@id="login_submit"]/div/div/input[6]'
-password = '//*[@id="login_submit"]/div/div/input[7]'
+username = '//*[@id="login_submit"]/div/div/input[7]'
+password = '//*[@id="login_submit"]/div/div/input[8]'
 login = '//*[@id="install_allow"]'
 
 # Заполняем форму авторизации
