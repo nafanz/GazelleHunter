@@ -1,5 +1,6 @@
 import re
-from web import web, authorization
+from selenium.webdriver.common.by import By
+from web import web
 import vk as api_key
 import sqlite3
 from db import count_is_null
@@ -10,13 +11,10 @@ from credentials import vk, groups
 driver = web('pass')
 driver.get(f"https://oauth.vk.com/authorize?client_id={vk['application']}]&response_type=token")
 
-# Для удобства сохраняем XPath формы авторизации
-username = '//*[@id="login_submit"]/div/div/input[6]'
-password = '//*[@id="login_submit"]/div/div/input[7]'
-login = '//*[@id="install_allow"]'
-
 # Заполняем форму авторизации
-authorization(driver, vk, username, password, login)
+driver.find_element(By.NAME, 'email').send_keys(f"{vk['login']}")
+driver.find_element(By.NAME, 'pass').send_keys(f"{vk['password']}")
+driver.find_element(By.ID, 'install_allow').click()
 
 token = re.findall('[a-z0-9]{10,}', driver.current_url)[0]
 
