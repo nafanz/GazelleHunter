@@ -3,4 +3,5 @@ praw
 py-vkontakte
 requests
 selenium
+webdriver-manager
 vk_messages
