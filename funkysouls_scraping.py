@@ -16,26 +16,18 @@ topic = 272990
 driver = web('tor')
 driver.get(f"{funkysouls['url']}/t/{topic}")
 
-count = 1
+# Определяем количество страниц в теме
+pagination = int(driver.find_element(By.CSS_SELECTOR, 'div.pagination:nth-child(3) > span:nth-child(2)').text[1:-1])
+
 users = {}
 
-# Определяем сколько страниц в теме
-# Регулярным выражением '\d+' оставляем только цифры, переводим в int
-pagination = driver.find_elements(By.XPATH, '//*[@id="content"]/section/header/div[1]/div[2]/span')[0].text
-pagination = int(re.findall('\d+', pagination)[0])
-
-# Проходим все страницы темы, сохраняя ники пользователей
-# Каждый проход цикла увеличивает значение count на 1
-# Выполняем цикл пока значение count меньше или равно pagination
-while count <= pagination:
-    driver.get(f"{funkysouls['url']}/t/{topic}_{count}")
-    id_all = driver.find_elements(By.XPATH, '//*[@class="username"]/a')
-    username = driver.find_elements(By.XPATH, '//*[@class="username"]')
-    for x, y in zip(id_all, username):
-        id = x.get_attribute("onclick")
-        id = re.findall('\d+', id)[0]
-        users[id] = y.text
-    count += 1
+for page in range(1, pagination+1):
+    driver.get(f"{funkysouls['url']}/t/{topic}_{page}")
+    # Все пользователи на странице
+    all = driver.find_elements(By.CSS_SELECTOR, 'li.username a')
+    for user in all:
+        # Словарь {id: имя пользователя}
+        users[re.findall('\d+', user.get_attribute("onclick"))[0]] = user.text
 
 table = 'funkysouls'
 
