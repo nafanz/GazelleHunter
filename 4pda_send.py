@@ -1,10 +1,12 @@
 import time
-from web import driver
+from web import web, send
+from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from db import select_one_user_to_send, successfully_sent, count_is_null
 from credentials import pda, question, trackers
 
 # Переходим на страницу авторизации
+driver = web('pass')
 driver.get(f"{pda['url']}/forum/index.php?act=auth")
 
 # Для удобства сохраняем XPath формы авторизации
@@ -13,12 +15,12 @@ password = '//*[@id="auth"]/div[4]/input'
 login = '//*[@id="auth"]/div[10]/input'
 
 # Заполняем форму авторизации
-driver.find_element_by_xpath(username).send_keys(pda['login'])
-driver.find_element_by_xpath(password).send_keys(pda['password'])
+driver.find_element(By.XPATH, username).send_keys(pda['login'])
+driver.find_element(By.XPATH, password).send_keys(pda['password'])
 
 # Ожидание для ввода капчи в ручную
 time.sleep(20)
-driver.find_element_by_xpath(login).click()
+driver.find_element(By.XPATH, login).click()
 
 # Для удобства сохраняем XPath формы отправки сообщения
 title = '//*[@id="threads-bottom-form"]/div[3]/input'
@@ -39,13 +41,11 @@ while True:
     # Ожидание, чтобы загрузились все элементы страницы и для паузы между отправками
     time.sleep(10)
     # Заполнение формы отправки сообщения
-    driver.find_element_by_xpath(title).send_keys('Трекеры')
-    driver.find_element_by_xpath(body).send_keys(text)
-    driver.find_element_by_xpath(button).click()
+    send(driver, text, title, body, button)
     time.sleep(10)
     # Прерываем отправку при "Не удалось создать новый диалог с пользователем. Попробуйте позднее."
     try:
-        driver.find_element_by_xpath(error)
+        driver.find_element(By.XPATH, error)
         print(user_id, 'break')
         break
     except NoSuchElementException:

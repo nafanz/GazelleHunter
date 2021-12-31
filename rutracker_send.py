@@ -1,10 +1,13 @@
 import time
+from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from web_def import driver, authorization
+from web import web, authorization, send
 from db import select_one_user_to_send, successfully_sent, sending_error, count_is_null
 from credentials import rutracker, question, trackers
 
+
 # Переходим на страницу авторизации
+driver = web('pass')
 driver.get(f"{rutracker['url']}/forum/login.php")
 
 # Для удобства сохраняем XPath формы авторизации
@@ -13,7 +16,7 @@ password = '//*[@id="login-form-full"]/table/tbody/tr[2]/td/div/table/tbody/tr[2
 login = '//*[@id="login-form-full"]/table/tbody/tr[2]/td/div/table/tbody/tr[4]/td/input'
 
 # Заполняем форму авторизации
-authorization(rutracker, username, password, login)
+authorization(driver, rutracker, username, password, login)
 
 # Для удобства сохраняем XPath формы отправки сообщения
 title = '//*[@id="post-msg-subj"]'
@@ -35,11 +38,9 @@ while True:
     driver.get(f"{rutracker['url']}/forum/privmsg.php?mode=post&u={user_id}")
     # Заполнение формы отправки сообщения
     try:
-        driver.find_element_by_xpath(title).send_keys("Трекеры")
-        driver.find_element_by_xpath(body).send_keys(text)
-        driver.find_element_by_xpath(button).click()
+        send(driver, text, title, body, button)
 
-        check_status = driver.find_element_by_xpath(status).text
+        check_status = driver.find_element(By.XPATH, status).text
         check_status = check_status.startswith('Вы превысили лимит количества исходящих сообщений (20)')
         if check_status is True:
             print(user_id, "break")

@@ -1,5 +1,6 @@
 import re
-from web_tor import driver
+from selenium.webdriver.common.by import By
+from web import web
 from credentials import funkysouls
 from db import saving_users, count_is_null
 
@@ -11,6 +12,8 @@ from db import saving_users, count_is_null
 
 # Переходим на первую страницу темы
 topic = 272990
+
+driver = web('tor')
 driver.get(f"{funkysouls['url']}/t/{topic}")
 
 count = 1
@@ -18,7 +21,7 @@ users = {}
 
 # Определяем сколько страниц в теме
 # Регулярным выражением '\d+' оставляем только цифры, переводим в int
-pagination = driver.find_elements_by_xpath('//*[@id="content"]/section/header/div[1]/div[2]/span')[0].text
+pagination = driver.find_elements(By.XPATH, '//*[@id="content"]/section/header/div[1]/div[2]/span')[0].text
 pagination = int(re.findall('\d+', pagination)[0])
 
 # Проходим все страницы темы, сохраняя ники пользователей
@@ -26,8 +29,8 @@ pagination = int(re.findall('\d+', pagination)[0])
 # Выполняем цикл пока значение count меньше или равно pagination
 while count <= pagination:
     driver.get(f"{funkysouls['url']}/t/{topic}_{count}")
-    id_all = driver.find_elements_by_xpath('//*[@class="username"]/a')
-    username = driver.find_elements_by_xpath('//*[@class="username"]')
+    id_all = driver.find_elements(By.XPATH, '//*[@class="username"]/a')
+    username = driver.find_elements(By.XPATH, '//*[@class="username"]')
     for x, y in zip(id_all, username):
         id = x.get_attribute("onclick")
         id = re.findall('\d+', id)[0]

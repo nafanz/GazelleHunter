@@ -1,21 +1,22 @@
 import re
-from web import driver
+from web import web, authorization
 import vk as api_key
 import sqlite3
 from db import count_is_null
 from credentials import vk, groups
 
+
+# Переходим на страницу авторизации
+driver = web('pass')
 driver.get(f"https://oauth.vk.com/authorize?client_id={vk['application']}]&response_type=token")
 
 # Для удобства сохраняем XPath формы авторизации
-username = '//*[@id="login_submit"]/div/div/input[7]'
-password = '//*[@id="login_submit"]/div/div/input[8]'
+username = '//*[@id="login_submit"]/div/div/input[6]'
+password = '//*[@id="login_submit"]/div/div/input[7]'
 login = '//*[@id="install_allow"]'
 
 # Заполняем форму авторизации
-driver.find_element_by_xpath(username).send_keys(vk['login'])
-driver.find_element_by_xpath(password).send_keys(vk['password'])
-driver.find_element_by_xpath(login).click()
+authorization(driver, vk, username, password, login)
 
 token = re.findall('[a-z0-9]{10,}', driver.current_url)[0]
 
