@@ -28,5 +28,4 @@ while True:
         time.sleep(10)
     # Закрытие попапа о новом сообщении, который прерывает отправку
     except ElementNotInteractableException:
-        driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/span').click()
-
+        driver.find_element(By.CLASS_NAME, 'close').click()
