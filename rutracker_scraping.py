@@ -1,10 +1,9 @@
 import requests
-from lxml import html
-import sqlite3
+import re
+from bs4 import BeautifulSoup
 from credentials import rutracker
-from db import count_is_null
+from db import saving_users, count_is_null
 # from selenium.webdriver.common.by import By
-# import re
 # from web import web
 #
 # driver = web('pass')
@@ -47,6 +46,7 @@ from db import count_is_null
 # for x in sorted(topics.items()):
 #     print(x[0],',  #', x[1])
 
+users = {}
 topics = (
     1004211,  # Обсуждение закрытых трекеров
     1026542,  # Просьбы инвайтов на закрытые трекеры [читать первый пост]
@@ -129,56 +129,38 @@ topics = (
     6158816,  # Архив: Обсуждение закрытых трекеров - XXXIV [1585446]
 )
 
-topic = 5860392
-r = requests.get(f"{rutracker['url']}/forum/viewtopic.php?t={topic}")
+count_is_null('rutracker')
 
-# Преобразуем данные для парсинга
-parser = html.fromstring(r.text)
+for topic in topics:
+    print()
+    print(topic)
+    source = BeautifulSoup(
+        requests.get(
+            url=f"{rutracker['url']}/forum/viewtopic.php?t={topic}"
+        ).text,
+        "lxml"
+    )
 
-# Получаем колличество страниц в теме
-pagination = parser.xpath('//a[@class="pg"]/@href')
+    pages = set()
+    pages_count = source.find_all(class_="pg")
 
-pg = set()
+    for i in pages_count:
+        pages.add(int(re.findall('\d{1,}', i.__getitem__('href'))[1]))
 
-# Обрезаем list оставляя только номера страниц
-# Так как пагинация есть сверху и снизу страницы мы оставляем только уникальные значения
-for item in pagination:
-    start = item.split(f'viewtopic.php?t={topic}&start=')
-    for i in start:
-        if i is not '':
-            pg.add(i)
+    for page in sorted(pages):
+        source_page = BeautifulSoup(
+            requests.get(
+                url=f"{rutracker['url']}/forum/viewtopic.php?t={topic}&start={page}"
+            ).text,
+            "lxml"
+        )
 
-# Сохраняем значение последней страницы в теме
-# Конвертируем str в int, нужно для сравнения с count
-pagination_max = int(max(pg, key=lambda x:int(x)))
-count = 0
+        all_id = source_page.select('tr:nth-child(2) > td > div > a:nth-child(1)')
+        all_nick = source_page.find_all(class_="nick")
 
-users = {}
+        for id, nick in zip(all_id, all_nick):
+            users[re.findall('\d+', id.__getitem__('href'))[0]] = nick.text
 
-# Проходим все страницы темы, сохраняя ники пользователей
-# Каждый проход цикла увеличивает значение count на 30
-# Выполняем цикл пока значение count меньше или равно pagination
-while count <= pagination_max:
-    r = requests.get(f"{rutracker['url']}/forum/viewtopic.php?t={topic}&start={count}")
-    parser = html.fromstring(r.text)
-    id_all = parser.xpath('//a[2][@class="txtb"]/@href')
-    username = parser.xpath('//tbody/tr[1]/td[1]/p[1]/text()')
-    for x, y in zip(username, id_all):
-        y = y.split('privmsg.php?mode=post&u=')[1]
-        users[y] = x
-    count += 30
+saving_users('rutracker', users)
+count_is_null('rutracker')
 
-table = 'rutracker'
-users_db = sqlite3.connect('users.db')
-
-users_db.executemany(f"""
-    INSERT OR IGNORE INTO {table} (
-        id,
-        username  
-        ) 
-        values(?, ?)
-""", users.items())
-
-users_db.commit()
-
-count_is_null(table)
