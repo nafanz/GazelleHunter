@@ -4,34 +4,25 @@ from web import web
 from db import saving_users, count_is_null
 from credentials import pda
 
-count = 0
 users = {}
+topics = (
+    191879,  # Инвайты на закрытые ресурсы
+)
 
-# Переходим на первую страницу темы
-topic = 191879
-driver = web('pass')
-driver.get(f"{pda['url']}/forum/index.php?showtopic={topic}")
+count_is_null('pda')
 
-# Определяем сколько страниц в теме
-# Регулярным выражением '\d+' оставляем только цифры, переводим в int * 20
-pagination = driver.find_elements(By.XPATH, '//*[@id="page-jump-1"]')[0].text
-pagination = int(re.findall('\d+', pagination)[0]) * 20
+for topic in topics:
+    driver = web('pass')
+    driver.get(f"{pda['url']}/forum/index.php?showtopic={topic}")
 
-# Проходим все страницы темы, сохраняя ники пользователей
-# Каждый проход цикла увеличивает значение count на 20
-# Выполняем цикл пока значение count меньше или равно pagination
-while count <= pagination:
-    driver.get(f"{pda['url']}/forum/index.php?showtopic=191879&st={count}")
-    id_all = driver.find_elements(By.XPATH, '//*[@class="normalname"]/a')
-    username = driver.find_elements(By.XPATH, '//*[@class="normalname"]')
-    for x, y in zip(id_all, username):
-        id = x.get_attribute("href")
-        id = re.findall('\d{2,}', id)[0]
-        users[id] = y.text
-    count += 20
+    pages = int(re.findall('\d+', driver.find_element(By.CLASS_NAME, 'pagelink').text)[0]) * 20
 
-table = 'pda'
+    for page in range(0, pages, 20):
+        driver.get(f"{pda['url']}/forum/index.php?showtopic={topic}&st={page}")
+        all = driver.find_elements(By.XPATH, '//*[@class="normalname"]/a')
+        for user in all:
+            # Словарь {id: имя пользователя}
+            users[re.findall('\d{2,}', user.get_attribute("href"))[0]] = user.text
 
-saving_users(table, users)
-
-count_is_null(table)
+saving_users('pda', users)
+count_is_null('pda')
