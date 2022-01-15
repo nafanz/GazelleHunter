@@ -4,33 +4,30 @@ from web import web
 from credentials import funkysouls
 from db import saving_users, count_is_null
 
-# Готово:
-# 99215 - Торрент трекеры I
-# 99218 - Торрент трекеры II
-# 164125 - Торрент трекеры III
-# 272990 - Торрент трекеры IV
-
-# Переходим на первую страницу темы
-topic = 272990
-
-driver = web('tor')
-driver.get(f"{funkysouls['url']}/t/{topic}")
-
-# Определяем количество страниц в теме
-pagination = int(driver.find_element(By.CSS_SELECTOR, 'div.pagination:nth-child(3) > span:nth-child(2)').text[1:-1])
-
 users = {}
+topics = (
+    # 99215,  # Торрент трекеры I
+    # 99218,  # Торрент трекеры II
+    # 164125,  # Торрент трекеры III
+    272990,  # Торрент трекеры IV
+    74739,  # Инвайты на FT / Invites
+)
 
-for page in range(1, pagination+1):
-    driver.get(f"{funkysouls['url']}/t/{topic}_{page}")
-    # Все пользователи на странице
-    all = driver.find_elements(By.CSS_SELECTOR, 'li.username a')
-    for user in all:
-        # Словарь {id: имя пользователя}
-        users[re.findall('\d+', user.get_attribute("onclick"))[0]] = user.text
+count_is_null('funkysouls')
+driver = web('tor')
 
-table = 'funkysouls'
+for topic in topics:
+    driver.get(f"{funkysouls['url']}/t/{topic}")
 
-saving_users(table, users)
+    pages = int(driver.find_element(By.CLASS_NAME, 'total').text[1:-1])
 
-count_is_null(table)
+    for page in range(1, pages+1):
+        driver.get(f"{funkysouls['url']}/t/{topic}_{page}")
+        # Все пользователи на странице
+        all = driver.find_elements(By.CSS_SELECTOR, 'li.username a')
+        for user in all:
+            # Словарь {id: имя пользователя}
+            users[re.findall('\d+', user.get_attribute("onclick"))[0]] = user.text
+
+saving_users('funkysouls', users)
+count_is_null('funkysouls')
