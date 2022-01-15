@@ -132,8 +132,6 @@ topics = (
 count_is_null('rutracker')
 
 for topic in topics:
-    print()
-    print(topic)
     source = BeautifulSoup(
         requests.get(
             url=f"{rutracker['url']}/forum/viewtopic.php?t={topic}"
