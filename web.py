@@ -27,6 +27,6 @@ def authorization(driver, object, username, password, login):
 
 
 def send(driver, text, title, body, button):
-    driver.find_element(By.XPATH, title).send_keys("Трекеры")
+    driver.find_element(By.XPATH, title).send_keys("Частные торрент-трекеры")
     driver.find_element(By.XPATH, body).send_keys(text)
     driver.find_element(By.XPATH, button).click()
