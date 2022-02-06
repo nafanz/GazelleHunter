@@ -7,7 +7,7 @@ from credentials import rutracker, question, trackers
 
 
 # Переходим на страницу авторизации
-driver = web('pass')
+driver = web('tor')
 driver.get(f"{rutracker['url']}/forum/login.php")
 
 # Для удобства сохраняем XPath формы авторизации
