@@ -1,7 +1,7 @@
 from db import select_one_user_to_send, successfully_sent, count_is_null
 from credentials import vk, question, trackers
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
 from web import web
 import time
 
@@ -16,6 +16,8 @@ time.sleep(10)
 # Подготавливаем полный текст сообщения
 text = question['ru'] + '\n'.join(trackers)
 
+system_msg = 'Сообщение не может быть отправлено, так как вы разослали слишком много сообщений за последнее время'
+
 while True:
     user_id = select_one_user_to_send('vk')
     driver.get(f"{vk['url']}/id{user_id}")
@@ -26,7 +28,12 @@ while True:
     time.sleep(5)
     driver.find_element(By.CLASS_NAME, 'FlatButton__content').click()
     time.sleep(5)
-    successfully_sent('vk', user_id)
+    try:
+        if driver.find_element(By.ID, 'system_msg').text.startswith(system_msg) is True:
+            print(user_id, "break")
+            break
+    except NoSuchElementException:
+        successfully_sent('vk', user_id)
 
 # count_is_null('vk')
 #
