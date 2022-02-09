@@ -3,16 +3,18 @@
 
 import time
 import praw
-from credentials import user_agent, reddit, subreddits, question, trackers
+from credentials import user_agent, reddit, question, trackers
 
 # client_id и client_secret взял из предварительно созданного приложения https://www.reddit.com/prefs/apps/
 # user_agent взял из браузера
 # username и password нужны только для публикации, для просмотра их можно не указывать
-reddit = praw.Reddit(client_id=reddit['client_id'],
-                     client_secret=reddit['client_secret'],
-                     user_agent=user_agent,
-                     username=reddit['login'],
-                     password=reddit['password'])
+reddit = praw.Reddit(
+    client_id=reddit['client_id'],
+    client_secret=reddit['client_secret'],
+    user_agent=user_agent,
+    username=reddit['login'],
+    password=reddit['password']
+)
 
 # Подготавливаем полный текст сообщения
 text = question['en'] + '\n\n'.join(trackers)
@@ -20,6 +22,12 @@ text = question['en'] + '\n\n'.join(trackers)
 comments = []
 nickname = set()
 ignore = set()
+
+subreddits = (
+    'seedboxes',
+    'trackers',
+    'torrents'
+)
 
 # https://praw.readthedocs.io/en/latest/code_overview/models/subreddit.html?highlight=moderator#praw.models.Subreddit.moderator
 for item in subreddits:
