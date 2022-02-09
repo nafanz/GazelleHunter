@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 import misc
 from credentials import funkysouls
 
+
 users = {}
 topics = (
     # 99215,  # Торрент трекеры I
@@ -30,3 +31,4 @@ for topic in topics:
 
 misc.saving_users('funkysouls', users)
 misc.count_is_null('funkysouls')
+

@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 import misc
 from credentials import rutracker
 
+
 driver = misc.web_surfing('pass')
 driver.get(f"{rutracker['url']}/forum/login.php")
 

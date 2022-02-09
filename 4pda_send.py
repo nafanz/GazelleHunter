@@ -2,7 +2,8 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 import misc
-from credentials import pda, question, trackers
+from credentials import pda, message_ru
+
 
 # Переходим на страницу авторизации
 driver = misc.web_surfing()
@@ -28,9 +29,6 @@ button = '//*[@id="create-thread-submit"]'
 
 error = '//*[@id="create-thread-messages"]/div'
 
-# Подготавливаем полный текст сообщения
-text = question['ru'] + '\n'.join(trackers)
-
 while True:
     user_id = misc.select_one_user_to_send('pda')
     driver.get(f"{pda['url']}/forum/index.php?act=qms&mid={user_id}")
@@ -38,7 +36,7 @@ while True:
     time.sleep(10)
     # Заполнение формы отправки сообщения
     driver.find_element(By.XPATH, title).send_keys("Частные торрент-трекеры")
-    driver.find_element(By.XPATH, body).send_keys(text)
+    driver.find_element(By.XPATH, body).send_keys(message_ru)
     driver.find_element(By.XPATH, button).click()
     time.sleep(10)
     # Прерываем отправку при "Не удалось создать новый диалог с пользователем. Попробуйте позднее."

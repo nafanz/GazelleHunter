@@ -6,6 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 users_db = sqlite3.connect('users.db')
 
+
 def web_surfing(tor=False):
     if tor is True:
         options = Options()
@@ -23,6 +24,7 @@ def web_surfing(tor=False):
 
     return driver
 
+
 def saving_users(table, users):
     users_db.executemany(f"""
         insert or ignore into {table} (
@@ -32,6 +34,7 @@ def saving_users(table, users):
             values(?, ?)
     """, users.items())
     users_db.commit()
+
 
 def select_one_user_to_send(table):
     '''
@@ -47,6 +50,7 @@ def select_one_user_to_send(table):
         )
     )[0][0]
     return user_id
+
 
 def successfully_sent(table, user_id):
     '''
@@ -64,6 +68,7 @@ def successfully_sent(table, user_id):
     users_db.commit()
     print(user_id, 'done')
 
+
 def sending_error(table, user_id):
     '''
     Запись негативного результата в таблицу
@@ -80,6 +85,7 @@ def sending_error(table, user_id):
     users_db.commit()
     print(user_id, 'ignore')
 
+
 def count_is_null(table):
     '''
     Определение колличества пользователей, кому еще не были отправлены сообщения
@@ -89,3 +95,4 @@ def count_is_null(table):
     '''
     count = users_db.execute(f"select count(*) from {table} where send is Null;")
     print('Осталось:', count.fetchone()[0])
+

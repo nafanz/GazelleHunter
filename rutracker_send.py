@@ -2,7 +2,7 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 import misc
-from credentials import rutracker, question, trackers
+from credentials import rutracker, message_ru
 
 
 # Переходим на страницу авторизации
@@ -25,7 +25,7 @@ while True:
     # Заполнение формы отправки сообщения
     try:
         driver.find_element(By.ID, 'post-msg-subj').send_keys("Частные торрент-трекеры")
-        driver.find_element(By.ID, 'post-textarea').send_keys(question['ru'] + '\n'.join(trackers))
+        driver.find_element(By.ID, 'post-textarea').send_keys(message_ru)
         driver.find_element(By.ID, 'post-submit-btn').click()
 
         # Ваше сообщение было отправлено \ Вы превысили лимит количества исходящих сообщений (20)

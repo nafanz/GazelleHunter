@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 import misc
 from credentials import pda
 
+
 users = {}
 topics = (
     191879,  # Инвайты на закрытые ресурсы
@@ -25,3 +26,4 @@ for topic in topics:
 
 misc.saving_users('pda', users)
 misc.count_is_null('pda')
+

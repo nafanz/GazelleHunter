@@ -123,4 +123,3 @@ for topic in topics:
 
 misc.saving_users('rutracker', users)
 misc.count_is_null('rutracker')
-

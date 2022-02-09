@@ -1,10 +1,10 @@
-# https://praw.readthedocs.io/en/latest/
-# https://praw.readthedocs.io/en/latest/getting_started/logging.html
-
 import time
 import praw
-from credentials import user_agent, reddit, question, trackers
+from credentials import user_agent, reddit, message_en
 
+
+# https://praw.readthedocs.io/en/latest/
+# https://praw.readthedocs.io/en/latest/getting_started/logging.html
 # client_id и client_secret взял из предварительно созданного приложения https://www.reddit.com/prefs/apps/
 # user_agent взял из браузера
 # username и password нужны только для публикации, для просмотра их можно не указывать
@@ -15,9 +15,6 @@ reddit = praw.Reddit(
     username=reddit['login'],
     password=reddit['password']
 )
-
-# Подготавливаем полный текст сообщения
-text = question['en'] + '\n\n'.join(trackers)
 
 comments = []
 nickname = set()
@@ -62,6 +59,6 @@ for item in comments:
 # После каждого отправленного сообщение выводим 'nickname + send' и засыпаем
 for item in nickname:
     if item not in ignore:
-        reddit.redditor(item).message('Trackers', text)
+        reddit.redditor(item).message('Private torrent trackers', message_en)
         print(item, 'send')
         time.sleep(30)

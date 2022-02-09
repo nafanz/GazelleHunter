@@ -51,3 +51,6 @@ trackers = {
     'MorethanTV': None,  # https://www.morethantv.me
     'PixelCove': None  # https://www.pixelcove.me
 }
+
+message_ru = question['ru'] + '\n'.join(trackers)
+message_en = question['en'] + '\n\n'.join(trackers)  # Reddit

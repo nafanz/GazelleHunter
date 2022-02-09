@@ -2,7 +2,7 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 import misc
-from credentials import vk, question, trackers
+from credentials import vk, message_ru
 
 
 driver = misc.web_surfing()
@@ -11,9 +11,6 @@ driver.find_element(By.ID, 'index_email').send_keys(f"{vk['login']}")
 driver.find_element(By.ID, 'index_pass').send_keys(f"{vk['password']}")
 driver.find_element(By.ID, 'index_login_button').click()
 time.sleep(10)
-
-# Подготавливаем полный текст сообщения
-text = question['ru'] + '\n'.join(trackers)
 
 system_msg = 'Сообщение не может быть отправлено, так как вы разослали слишком много сообщений за последнее время'
 
@@ -26,7 +23,7 @@ while True:
         if send.text.startswith('Написать сообщение') is True:
             send.click()
             time.sleep(5)
-            driver.find_element(By.ID, 'mail_box_editable').send_keys(text)
+            driver.find_element(By.ID, 'mail_box_editable').send_keys(message_ru)
             time.sleep(5)
             driver.find_element(By.CLASS_NAME, 'FlatButton__content').click()
             time.sleep(5)
