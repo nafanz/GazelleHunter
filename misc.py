@@ -1,6 +1,27 @@
 import sqlite3
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+
 
 users_db = sqlite3.connect('users.db')
+
+def web_surfing(tor=False):
+    if tor is True:
+        options = Options()
+        # Использование прокси, Tor Browser должен быть запущен
+        options.add_argument('--proxy-server=socks5://127.0.0.1:9150')
+        # options.add_argument("headless")
+        driver = webdriver.Chrome(
+            ChromeDriverManager(log_level=0).install(),
+            options=options
+        )
+    else:
+        driver = webdriver.Chrome(
+            ChromeDriverManager(log_level=0).install()
+        )
+
+    return driver
 
 def saving_users(table, users):
     users_db.executemany(f"""

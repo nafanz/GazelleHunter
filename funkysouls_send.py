@@ -1,20 +1,19 @@
 import time
-from web import web
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import ElementNotInteractableException
-from db import select_one_user_to_send, successfully_sent, count_is_null
+import misc
 from credentials import funkysouls, question, trackers
 
 
 # Заполняем форму авторизации
-driver = web('tor')
+driver = misc.web_surfing(tor=True)
 driver.get(f"{funkysouls['url']}/login")
 driver.find_element(By.ID, 'username').send_keys(f"{funkysouls['login']}")
 driver.find_element(By.ID, 'password').send_keys(f"{funkysouls['password']}")
 driver.find_element(By.CSS_SELECTOR, '.controls > button:nth-child(1)').click()
 
 while True:
-    user_id = select_one_user_to_send('funkysouls')
+    user_id = misc.select_one_user_to_send('funkysouls')
     driver.get(f"{funkysouls['url']}/u/{user_id}/pm")
     # Заполнение формы отправки сообщения
     try:
@@ -22,8 +21,8 @@ while True:
         driver.find_element(By.ID, 'answer_form').send_keys(question['ru'] + '\n'.join(trackers))
         driver.find_element(By.ID, 'add_tracking').click()
         driver.find_element(By.NAME, 'submit').click()
-        successfully_sent('funkysouls', user_id)
-        count_is_null('funkysouls')
+        misc.successfully_sent('funkysouls', user_id)
+        misc.count_is_null('funkysouls')
         # Ожидание
         time.sleep(10)
     # Закрытие попапа о новом сообщении, который прерывает отправку

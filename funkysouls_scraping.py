@@ -1,8 +1,7 @@
 import re
 from selenium.webdriver.common.by import By
-from web import web
+import misc
 from credentials import funkysouls
-from db import saving_users, count_is_null
 
 users = {}
 topics = (
@@ -13,8 +12,8 @@ topics = (
     74739,  # Инвайты на FT / Invites
 )
 
-count_is_null('funkysouls')
-driver = web('tor')
+misc.count_is_null('funkysouls')
+driver = misc.web_surfing(tor=True)
 
 for topic in topics:
     driver.get(f"{funkysouls['url']}/t/{topic}")
@@ -29,5 +28,5 @@ for topic in topics:
             # Словарь {id: имя пользователя}
             users[re.findall('\d+', user.get_attribute("onclick"))[0]] = user.text
 
-saving_users('funkysouls', users)
-count_is_null('funkysouls')
+misc.saving_users('funkysouls', users)
+misc.count_is_null('funkysouls')

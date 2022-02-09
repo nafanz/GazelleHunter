@@ -12,17 +12,6 @@ vk = {
     'application': 'XXX'
 }
 
-groups = [
-    'club85955762',
-    'invitesmag',
-    'flac_music',
-    'jpopsuki',
-    'btinvite',
-    'club3111532',
-    'deepbassnine',
-    'club9680876'
-]
-
 reddit = {
     'login': 'XXX',
     'password': 'XXX',

@@ -1,12 +1,11 @@
 import time
-from web import web, send
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from db import select_one_user_to_send, successfully_sent, count_is_null
+import misc
 from credentials import pda, question, trackers
 
 # Переходим на страницу авторизации
-driver = web('pass')
+driver = misc.web_surfing()
 driver.get(f"{pda['url']}/forum/index.php?act=auth")
 
 # Для удобства сохраняем XPath формы авторизации
@@ -32,16 +31,15 @@ error = '//*[@id="create-thread-messages"]/div'
 # Подготавливаем полный текст сообщения
 text = question['ru'] + '\n'.join(trackers)
 
-# Указываем таблицу
-table = 'pda'
-
 while True:
-    user_id = select_one_user_to_send(table)
+    user_id = misc.select_one_user_to_send('pda')
     driver.get(f"{pda['url']}/forum/index.php?act=qms&mid={user_id}")
     # Ожидание, чтобы загрузились все элементы страницы и для паузы между отправками
     time.sleep(10)
     # Заполнение формы отправки сообщения
-    send(driver, text, title, body, button)
+    driver.find_element(By.XPATH, title).send_keys("Частные торрент-трекеры")
+    driver.find_element(By.XPATH, body).send_keys(text)
+    driver.find_element(By.XPATH, button).click()
     time.sleep(10)
     # Прерываем отправку при "Не удалось создать новый диалог с пользователем. Попробуйте позднее."
     try:
@@ -49,6 +47,6 @@ while True:
         print(user_id, 'break')
         break
     except NoSuchElementException:
-        successfully_sent(table, user_id)
+        misc.successfully_sent('pda', user_id)
 
-count_is_null(table)
+misc.count_is_null('pda')

@@ -1,13 +1,12 @@
 import time
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from web import web
-from db import select_one_user_to_send, successfully_sent, sending_error, count_is_null
+import misc
 from credentials import rutracker, question, trackers
 
 
 # Переходим на страницу авторизации
-driver = web('tor')
+driver = misc.web_surfing(tor=True)
 driver.get(f"{rutracker['url']}/forum/login.php")
 
 # Для удобства сохраняем XPath формы авторизации
@@ -21,7 +20,7 @@ driver.find_element(By.CLASS_NAME, 'bold.long').click()
 
 # Отправляем сообщения в цикле, заполняем send в базе
 while True:
-    user_id = select_one_user_to_send('rutracker')
+    user_id = misc.select_one_user_to_send('rutracker')
     driver.get(f"{rutracker['url']}/forum/privmsg.php?mode=post&u={user_id}")
     # Заполнение формы отправки сообщения
     try:
@@ -30,16 +29,16 @@ while True:
         driver.find_element(By.ID, 'post-submit-btn').click()
 
         # Ваше сообщение было отправлено \ Вы превысили лимит количества исходящих сообщений (20)
-        if driver.find_element(By.CLASS_NAME, 'mrg_16').text.startswith('Вы превысили лимит количества исходящих сообщений (20)') is True:
+        if driver.find_element(By.CLASS_NAME, 'mrg_16').text.startswith('Вы превысили лимит количества исходящих сообщений') is True:
             print(user_id, "break")  # На самом деле 10
             break
         else:
-            successfully_sent('rutracker', user_id)
+            misc.successfully_sent('rutracker', user_id)
     # Обрабатываем исключение если элемента нет
     # Возникает из-за того, что пользователю нельзя отправлять сообщения
     except NoSuchElementException:
-        sending_error('rutracker', user_id)
+        misc.sending_error('rutracker', user_id)
     # Ожидание
     time.sleep(60)
 
-count_is_null('rutracker')
+misc.count_is_null('rutracker')

@@ -1,7 +1,6 @@
 import re
 from selenium.webdriver.common.by import By
-from web import web
-from db import saving_users, count_is_null
+import misc
 from credentials import pda
 
 users = {}
@@ -9,10 +8,10 @@ topics = (
     191879,  # Инвайты на закрытые ресурсы
 )
 
-count_is_null('pda')
+misc.count_is_null('pda')
 
 for topic in topics:
-    driver = web('pass')
+    driver = misc.web_surfing()
     driver.get(f"{pda['url']}/forum/index.php?showtopic={topic}")
 
     pages = int(re.findall('\d+', driver.find_element(By.CLASS_NAME, 'pagelink').text)[0]) * 20
@@ -24,5 +23,5 @@ for topic in topics:
             # Словарь {id: имя пользователя}
             users[re.findall('\d{2,}', user.get_attribute("href"))[0]] = user.text
 
-saving_users('pda', users)
-count_is_null('pda')
+misc.saving_users('pda', users)
+misc.count_is_null('pda')
