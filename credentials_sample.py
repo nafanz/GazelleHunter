@@ -44,12 +44,15 @@ question = {
 }
 
 trackers = {
+    'BrasilTracker': 'https://brasiltracker.org',
     'Anthelion': 'https://anthelion.me',
     'BroadcasTheNet': 'https://broadcasthe.net',
-    'DICMusic': None,  # https://dicmusic.club
-    'Materialize': None,  # https://materialize.is
-    'MorethanTV': None,  # https://www.morethantv.me
-    'PixelCove': None  # https://www.pixelcove.me
+    'DICMusic': 'https://dicmusic.club',
+    'GreatPosterWall': 'https://greatposterwall.com',
+    'HeBits': 'https://hebits.net',
+    'Materialize': 'https://materialize.is',
+    'MorethanTV': 'https://www.morethantv.me',
+    'PixelCove': 'https://www.pixelcove.me'
 }
 
 message_ru = question['ru'] + '\n'.join(trackers)
