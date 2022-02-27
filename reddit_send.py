@@ -1,10 +1,9 @@
 import time
 import praw
+import sqlite3
 from credentials import user_agent, reddit, message_en
 
 
-# https://praw.readthedocs.io/en/latest/
-# https://praw.readthedocs.io/en/latest/getting_started/logging.html
 # client_id и client_secret взял из предварительно созданного приложения https://www.reddit.com/prefs/apps/
 # user_agent взял из браузера
 # username и password нужны только для публикации, для просмотра их можно не указывать
@@ -16,49 +15,50 @@ reddit = praw.Reddit(
     password=reddit['password']
 )
 
-comments = []
-nickname = set()
 ignore = set()
 
 subreddits = (
+    # 'Invites', https://www.reddithelp.com/hc/en-us/articles/360049499032
+    'OpenSignups',
     'seedboxes',
+    'torrents',
     'trackers',
-    'torrents'
 )
 
-# https://praw.readthedocs.io/en/latest/code_overview/models/subreddit.html?highlight=moderator#praw.models.Subreddit.moderator
+# Модераторы сабреддитов
 for item in subreddits:
     for item in reddit.subreddit(item).moderator():
         ignore.add(item.name)
 
-# Формируем список пользователей с кем у нас была переписка
-# https://praw.readthedocs.io/en/latest/code_overview/reddit/inbox.html?highlight=sent#praw.models.Inbox.sent
+# С кем у нас была переписка
 for item in reddit.inbox.sent(limit=None):
     ignore.add(item.dest.name)
 
-# В каждом сабреддите отбираем N (limit=) новых записей
-# Сохраняем имя автора и id комментария
-for item in subreddits:
-    for item in reddit.subreddit(item).new(limit=5):
-        if item.author is None:
-            pass
-        else:
-            comments.append(item.id)
-            nickname.add(item.author.name)
+users_db = sqlite3.connect('users.db')
 
-# Получаем из комментария имя пользователя
-for item in comments:
-    submission = reddit.submission(id=item)
-    submission.comments.replace_more(limit=None)
-    for item in submission.comments.list():
-        if item.author is None:
-            pass
-        else:
-            nickname.add(item.author.name)
+exceptions_many = [
+    'NOT_WHITELISTED_BY_USER_MESSAGE',
+    'INVALID_USER'
+]
 
-# После каждого отправленного сообщение выводим 'nickname + send' и засыпаем
-for item in nickname:
-    if item not in ignore:
-        reddit.redditor(item).message('Private torrent trackers', message_en)
-        print(item, 'send')
-        time.sleep(30)
+while True:
+    user_id = list(users_db.execute(f"select id from reddit where send is Null limit 1;"))[0][0]
+    if user_id not in ignore:
+        try:
+            reddit.redditor(user_id).message('Private torrent trackers', message_en)
+        except praw.exceptions.RedditAPIException as exception:
+            print(user_id, exception)
+            if exception.items[0].error_type in exceptions_many:
+                pass
+            elif exception.items[0].error_type == 'RATELIMIT':
+                break
+            else:
+                raise
+        users_db.execute(f"update reddit set send = 'Done' where id = '{user_id}';")
+        users_db.commit()
+        print(user_id, 'done')
+        time.sleep(60)
+    else:
+        users_db.execute(f"update reddit set send = 'Ignore' where id = '{user_id}';")
+        users_db.commit()
+        print(user_id, 'ignore')
