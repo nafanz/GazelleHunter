@@ -9,25 +9,13 @@ from credentials import pda, message_ru
 driver = misc.web_surfing()
 driver.get(f"{pda['url']}/forum/index.php?act=auth")
 
-# Для удобства сохраняем XPath формы авторизации
-username = '//*[@id="auth"]/div[3]/input'
-password = '//*[@id="auth"]/div[4]/input'
-login = '//*[@id="auth"]/div[10]/input'
-
 # Заполняем форму авторизации
-driver.find_element(By.XPATH, username).send_keys(pda['login'])
-driver.find_element(By.XPATH, password).send_keys(pda['password'])
+driver.find_element(By.NAME, 'login').send_keys(pda['login'])
+driver.find_element(By.NAME, 'password').send_keys(pda['password'])
 
 # Ожидание для ввода капчи в ручную
 time.sleep(20)
-driver.find_element(By.XPATH, login).click()
-
-# Для удобства сохраняем XPath формы отправки сообщения
-title = '//*[@id="threads-bottom-form"]/div[3]/input'
-body = '//*[@id="thread-msg"]'
-button = '//*[@id="create-thread-submit"]'
-
-error = '//*[@id="create-thread-messages"]/div'
+driver.find_element(By.CLASS_NAME, 'btn').click()
 
 while True:
     user_id = misc.select_one_user_to_send('pda')
@@ -35,13 +23,13 @@ while True:
     # Ожидание, чтобы загрузились все элементы страницы и для паузы между отправками
     time.sleep(10)
     # Заполнение формы отправки сообщения
-    driver.find_element(By.XPATH, title).send_keys("Частные торрент-трекеры")
-    driver.find_element(By.XPATH, body).send_keys(message_ru)
-    driver.find_element(By.XPATH, button).click()
+    driver.find_element(By.NAME, 'title').send_keys("Частные торрент-трекеры")
+    driver.find_element(By.NAME, 'message').send_keys(message_ru)
+    driver.find_element(By.ID, 'create-thread-submit').click()
     time.sleep(10)
     # Прерываем отправку при "Не удалось создать новый диалог с пользователем. Попробуйте позднее."
     try:
-        driver.find_element(By.XPATH, error)
+        driver.find_element(By.CLASS_NAME, 'list-group-item.msgbox.error')
         print(user_id, 'break')
         break
     except NoSuchElementException:
