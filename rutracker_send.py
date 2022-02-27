@@ -29,8 +29,9 @@ while True:
         driver.find_element(By.ID, 'post-submit-btn').click()
 
         # Ваше сообщение было отправлено \ Вы превысили лимит количества исходящих сообщений (20)
+        # Учитываются ЛС \ Исходящие
         if driver.find_element(By.CLASS_NAME, 'mrg_16').text.startswith('Вы превысили лимит количества исходящих сообщений') is True:
-            print(user_id, "break")  # На самом деле 10
+            print(user_id, "break")
             break
         else:
             misc.successfully_sent('rutracker', user_id)
