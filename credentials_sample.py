@@ -44,8 +44,8 @@ question = {
 }
 
 trackers = {
-    'BrasilTracker': 'https://brasiltracker.org',
     'Anthelion': 'https://anthelion.me',
+    'BrasilTracker': 'https://brasiltracker.org',
     'BroadcasTheNet': 'https://broadcasthe.net',
     'DICMusic': 'https://dicmusic.club',
     'GreatPosterWall': 'https://greatposterwall.com',

@@ -57,6 +57,8 @@ while True:
         users_db.execute(f"update reddit set send = 'Done' where id = '{user_id}';")
         users_db.commit()
         print(user_id, 'done')
+        count = users_db.execute(f"select count(*) from reddit where send is Null;")
+        print('Осталось:', count.fetchone()[0])
         time.sleep(60)
     else:
         users_db.execute(f"update reddit set send = 'Ignore' where id = '{user_id}';")
