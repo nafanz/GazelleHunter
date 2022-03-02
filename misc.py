@@ -96,3 +96,21 @@ def count_is_null(table):
     count = users_db.execute(f"select count(*) from {table} where send is Null;")
     print('Осталось:', count.fetchone()[0])
 
+question = {
+    'ru': 'Привет. Ты являешься участником какого-то из этих трекеров?\n\n',
+    'en': 'Hey. Are you a member of any of these trackers?\n\n\n'
+}
+
+trackers = {
+    'BrasilTracker': 'https://brasiltracker.org',
+    'BroadcasTheNet': 'https://broadcasthe.net',
+    'DICMusic': 'https://dicmusic.club',
+    'GreatPosterWall': 'https://greatposterwall.com',
+    'HeBits': 'https://hebits.net',
+    'Materialize': 'https://materialize.is',
+    'MorethanTV': 'https://www.morethantv.me',
+    'PixelCove': 'https://www.pixelcove.me'
+}
+
+message_ru = question['ru'] + '\n'.join(trackers)
+message_en = question['en'] + '\n\n'.join(trackers)  # Reddit

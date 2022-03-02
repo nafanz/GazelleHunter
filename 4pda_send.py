@@ -2,7 +2,7 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 import misc
-from credentials import pda, message_ru
+from credentials import pda
 
 
 # Переходим на страницу авторизации
@@ -24,7 +24,7 @@ while True:
     time.sleep(10)
     # Заполнение формы отправки сообщения
     driver.find_element(By.NAME, 'title').send_keys("Частные торрент-трекеры")
-    driver.find_element(By.NAME, 'message').send_keys(message_ru)
+    driver.find_element(By.NAME, 'message').send_keys(misc.message_ru)
     driver.find_element(By.ID, 'create-thread-submit').click()
     time.sleep(10)
     # Прерываем отправку при "Не удалось создать новый диалог с пользователем. Попробуйте позднее."

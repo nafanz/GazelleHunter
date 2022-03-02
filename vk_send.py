@@ -2,7 +2,7 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 import misc
-from credentials import vk, message_ru
+from credentials import vk
 
 
 driver = misc.web_surfing()
@@ -23,7 +23,7 @@ while True:
         if send.text.startswith('Написать сообщение') is True:
             send.click()
             time.sleep(5)
-            driver.find_element(By.ID, 'mail_box_editable').send_keys(message_ru)
+            driver.find_element(By.ID, 'mail_box_editable').send_keys(misc.message_ru)
             time.sleep(5)
             driver.find_element(By.CLASS_NAME, 'FlatButton__content').click()
             time.sleep(5)

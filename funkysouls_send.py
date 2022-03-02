@@ -2,7 +2,7 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import ElementNotInteractableException
 import misc
-from credentials import funkysouls, message_ru
+from credentials import funkysouls
 
 
 # Заполняем форму авторизации
@@ -18,7 +18,7 @@ while True:
     # Заполнение формы отправки сообщения
     try:
         driver.find_element(By.NAME, 'msg_title').send_keys('Частные торрент-трекеры')
-        driver.find_element(By.ID, 'answer_form').send_keys(message_ru)
+        driver.find_element(By.ID, 'answer_form').send_keys(misc.message_ru)
         driver.find_element(By.ID, 'add_tracking').click()
         driver.find_element(By.NAME, 'submit').click()
         misc.successfully_sent('funkysouls', user_id)

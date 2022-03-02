@@ -1,7 +1,8 @@
 import time
 import praw
 import sqlite3
-from credentials import user_agent, reddit, message_en
+import misc
+from credentials import user_agent, reddit
 
 
 # client_id и client_secret взял из предварительно созданного приложения https://www.reddit.com/prefs/apps/
@@ -45,7 +46,7 @@ while True:
     user_id = list(users_db.execute(f"select id from reddit where send is Null limit 1;"))[0][0]
     if user_id not in ignore:
         try:
-            reddit.redditor(user_id).message('Private torrent trackers', message_en)
+            reddit.redditor(user_id).message('Private torrent trackers', misc.message_en)
         except praw.exceptions.RedditAPIException as exception:
             print(user_id, exception)
             if exception.items[0].error_type in exceptions_many:

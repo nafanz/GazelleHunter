@@ -24,14 +24,14 @@ api = api_key.Api(token)
 users = set()
 
 groups = [
-    'club85955762',
-    'invitesmag',
-    'flac_music',
-    'jpopsuki',
-    'btinvite',
-    'club3111532',
-    'deepbassnine',
-    'club9680876'
+    'club85955762',  # CASLON MUSIC / what.cd
+    'invitesmag',  # Купля-Продажа обмен инвайтами (приглашениями)
+    'flac_music',  # Waffles.CH & What.CD (Apollo.rip & Redacted.ch)
+    'jpopsuki',  # Jpopsuki
+    'btinvite',  # БитТОРРЕНТ трекеры – обмен инвайтами, помощь
+    'club3111532',  # Soulseek
+    'deepbassnine',  # deepbassnine.com (db9)
+    'club9680876'  # karagarga
 ]
 
 for item in [group for group in api.get_groups(groups)]:
