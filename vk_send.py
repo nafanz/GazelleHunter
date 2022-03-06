@@ -32,6 +32,7 @@ while True:
                 break
             else:
                 misc.successfully_sent('vk', user_id)
+                time.sleep(60)
         elif send.text.startswith('Отправить подарок') is True:
             misc.sending_error('vk', user_id)
     except NoSuchElementException:
