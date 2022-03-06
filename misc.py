@@ -108,8 +108,8 @@ trackers = {
     'GreatPosterWall': 'https://greatposterwall.com',
     'HeBits': 'https://hebits.net',
     'Materialize': 'https://materialize.is',
-    'MorethanTV': 'https://www.morethantv.me',
-    'PixelCove': 'https://www.pixelcove.me'
+    'MorethanTV': 'https://morethantv.me',
+    'PixelCove': 'https://pixelcove.me'
 }
 
 message_ru = question['ru'] + '\n'.join(trackers)
