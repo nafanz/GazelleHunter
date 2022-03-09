@@ -106,7 +106,6 @@ trackers = {
     'BroadcasTheNet': 'https://broadcasthe.net',
     'DICMusic': 'https://dicmusic.club',
     'GreatPosterWall': 'https://greatposterwall.com',
-    'HeBits': 'https://hebits.net',
     'Materialize': 'https://materialize.is',
     'MorethanTV': 'https://morethantv.me',
     'PixelCove': 'https://pixelcove.me'
