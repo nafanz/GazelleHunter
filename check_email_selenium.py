@@ -1,5 +1,7 @@
 import time
+import requests
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import WebDriverException
 import misc
 import credentials
 
@@ -25,3 +27,17 @@ for mail in credentials.cock_li.items():
     driver.find_element(By.ID, 'rcmloginsubmit').click()
     time.sleep(60)
     driver.quit()
+
+spreadsheet = requests.get('https://nafanz.github.io/spreadsheet.json').json()['spreadsheet']
+
+for item in spreadsheet:
+    start = item['Name'].split('<a href="')[1]
+    end = start.split('">')[0]
+    print(end)
+    driver = misc.web_surfing(tor=True)
+    try:
+        driver.get(end)
+        time.sleep(30)
+        driver.quit()
+    except WebDriverException:
+        driver.quit()
