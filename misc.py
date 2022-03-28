@@ -66,8 +66,7 @@ trackers = {
     'DICMusic': 'https://dicmusic.club',
     'GreatPosterWall': 'https://greatposterwall.com',
     'Materialize': 'https://materialize.is',
-    'MorethanTV': 'https://morethantv.me',
-    'PixelCove': 'https://pixelcove.me'
+    'MorethanTV': 'https://morethantv.me'
 }
 
 message_ru = question['ru'] + '\n'.join(trackers)
