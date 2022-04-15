@@ -63,10 +63,8 @@ question = {
 trackers = {
     'BrasilTracker': 'https://brasiltracker.org',
     'BroadcasTheNet': 'https://broadcasthe.net',
-    'DICMusic': 'https://dicmusic.club',
     'GreatPosterWall': 'https://greatposterwall.com',
-    'Materialize': 'https://materialize.is',
-    'MorethanTV': 'https://morethantv.me'
+    'Materialize': 'https://materialize.is'
 }
 
 message_ru = question['ru'] + '\n'.join(trackers)
