@@ -22,21 +22,14 @@ for repos in repos_list:
         code = requests.get(f'{repos_api}/{repos}/commits?page={x}').json()
         try:
             for y in code:
-                email_author = y['commit']['author']['email']
-                if not email_author.endswith('github.com'):
-                    print(email_author)
-                    email_re = re.findall(email_regex, email_author)
-                    print(email_re)
-                    # email.add(re.findall(email_regex, email_author))
+                email_commit = y['commit']['author']['email']
+                if not email_commit.endswith('github.com'):
+                    email.add((re.findall(email_regex, email_commit))[0])
 
-                email_committer = y['commit']['committer']['email']
-                if not email_committer.endswith('github.com'):
-                    print(email_committer)
-                    email_re = re.findall(email_regex, email_committer)
-                    print(email_re)
-                    # email.add(re.findall(email_regex, email_committer))
+                email_commit = y['commit']['committer']['email']
+                if not email_commit.endswith('github.com'):
+                    email.add((re.findall(email_regex, email_commit))[0])
         except TypeError:
             pass
 
-# for x in email:
-#     print(x)
+print(len(email), email)
