@@ -1,6 +1,6 @@
 import time
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException
 import misc
 from credentials import vk
 
@@ -18,6 +18,11 @@ driver.find_element(By.XPATH, '/html/body/div/div/div/div[2]/div/form/div[1]/div
 time.sleep(5)
 driver.find_element(By.XPATH, '/html/body/div/div/div/div[2]/div/form/div[2]/button/div/span').click()
 time.sleep(5)
+
+send_text = (
+    'Назад',
+    'Отправить подарок'
+)
 
 system_msg = 'Сообщение не может быть отправлено, так как вы разослали слишком много сообщений за последнее время'
 
@@ -40,7 +45,7 @@ while True:
             else:
                 misc.successfully_sent('vk', user_id)
                 time.sleep(60)
-        elif send.text.startswith('Отправить подарок') is True:
+        elif send.text.startswith(send_text) is True:
             misc.sending_error('vk', user_id)
     except NoSuchElementException:
         misc.sending_error('vk', user_id)
