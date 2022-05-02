@@ -10,6 +10,7 @@ users_db = sqlite3.connect('users.db')
 def web_surfing(tor=False):
     if tor is True:
         options = Options()
+        # https://hideip.me/ru/proxy/socks5list
         # Использование прокси, Tor Browser должен быть запущен
         options.add_argument('--proxy-server=socks5://127.0.0.1:9150')
         # options.add_argument("headless")
