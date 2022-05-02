@@ -7,10 +7,17 @@ from credentials import vk
 
 driver = misc.web_surfing()
 driver.get(f"{vk['url']}")
-driver.find_element(By.ID, 'index_email').send_keys(f"{vk['login']}")
-driver.find_element(By.ID, 'index_pass').send_keys(f"{vk['password']}")
-driver.find_element(By.ID, 'index_login_button').click()
-time.sleep(10)
+time.sleep(5)
+driver.find_element(By.XPATH, '//*[@id="index_login"]/div/form/button[1]/span').click()
+time.sleep(5)
+driver.find_element(By.XPATH, '/html/body/div/div/div/div[2]/div/form/div[1]/section/div/div/div/input').send_keys(f"{vk['login']}")
+time.sleep(5)
+driver.find_element(By.XPATH, '/html/body/div/div/div/div[2]/div/form/div[2]/div[1]/button/div').click()
+time.sleep(5)
+driver.find_element(By.XPATH, '/html/body/div/div/div/div[2]/div/form/div[1]/div[3]/div[2]/div[1]/div/input').send_keys(f"{vk['password']}")
+time.sleep(5)
+driver.find_element(By.XPATH, '/html/body/div/div/div/div[2]/div/form/div[2]/button/div/span').click()
+time.sleep(5)
 
 system_msg = 'Сообщение не может быть отправлено, так как вы разослали слишком много сообщений за последнее время'
 
