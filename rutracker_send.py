@@ -14,8 +14,8 @@ username = '//*[@id="login-form-full"]/table/tbody/tr[2]/td/div/table/tbody/tr[1
 password = '//*[@id="login-form-full"]/table/tbody/tr[2]/td/div/table/tbody/tr[2]/td[2]/input'
 
 # Заполняем форму авторизации
-driver.find_element(By.XPATH, username).send_keys(f"{rutracker['login']}")
-driver.find_element(By.XPATH, password).send_keys(f"{rutracker['password']}")
+driver.find_element(By.XPATH, username).send_keys(rutracker['login'])
+driver.find_element(By.XPATH, password).send_keys(rutracker['password'])
 driver.find_element(By.CLASS_NAME, 'bold.long').click()
 
 # Отправляем сообщения в цикле, заполняем send в базе

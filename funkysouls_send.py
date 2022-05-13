@@ -8,8 +8,8 @@ from credentials import funkysouls
 # Заполняем форму авторизации
 driver = misc.web_surfing(tor=True)
 driver.get(f"{funkysouls['url']}/login")
-driver.find_element(By.ID, 'username').send_keys(f"{funkysouls['login']}")
-driver.find_element(By.ID, 'password').send_keys(f"{funkysouls['password']}")
+driver.find_element(By.ID, 'username').send_keys(funkysouls['login'])
+driver.find_element(By.ID, 'password').send_keys(funkysouls['password'])
 driver.find_element(By.CSS_SELECTOR, '.controls > button:nth-child(1)').click()
 
 while True:
