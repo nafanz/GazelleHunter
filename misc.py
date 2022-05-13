@@ -62,7 +62,7 @@ question = {
 }
 
 trackers = {
-    'BrasilTracker': 'https://brasiltracker.org',
+    'BaconBits': 'https://baconbits.org',
     'BroadcasTheNet': 'https://broadcasthe.net',
     'GreatPosterWall': 'https://greatposterwall.com',
     'Materialize': 'https://materialize.is'
