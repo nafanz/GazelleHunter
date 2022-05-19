@@ -62,8 +62,8 @@ question = {
 }
 
 trackers = {
-    'BaconBits': 'https://baconbits.org',
     'BroadcasTheNet': 'https://broadcasthe.net',
+    'DICMusic': 'https://dicmusic.club',
     'GreatPosterWall': 'https://greatposterwall.com',
     'Materialize': 'https://materialize.is'
 }
