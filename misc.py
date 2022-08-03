@@ -64,7 +64,6 @@ question = {
 trackers = {
     'BroadcasTheNet': 'https://broadcasthe.net',
     'DICMusic': 'https://dicmusic.club',
-    'GreatPosterWall': 'https://greatposterwall.com',
     'Materialize': 'https://materialize.is'
 }
 
