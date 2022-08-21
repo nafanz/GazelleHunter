@@ -38,8 +38,8 @@ for item in reddit.inbox.sent(limit=None):
 users_db = sqlite3.connect('users.db')
 
 exceptions_many = [
-    'NOT_WHITELISTED_BY_USER_MESSAGE',
-    'INVALID_USER',
+    'NOT_WHITELISTED_BY_USER_MESSAGE',  # "can't send a message to that user" on field 'to'
+    'INVALID_USER',  # 'That user is invalid' on field 'to'
     'USER_DOESNT_EXIST'  # "that user doesn't exist" on field 'to'
 ]
 
