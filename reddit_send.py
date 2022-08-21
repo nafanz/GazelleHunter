@@ -39,7 +39,8 @@ users_db = sqlite3.connect('users.db')
 
 exceptions_many = [
     'NOT_WHITELISTED_BY_USER_MESSAGE',
-    'INVALID_USER'
+    'INVALID_USER',
+    'USER_DOESNT_EXIST'  # "that user doesn't exist" on field 'to'
 ]
 
 while True:
