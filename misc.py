@@ -15,12 +15,12 @@ def web_surfing(tor=False):
         options.add_argument('--proxy-server=socks5://127.0.0.1:9150')
         # options.add_argument("headless")
         driver = webdriver.Chrome(
-            ChromeDriverManager(log_level=0).install(),
+            ChromeDriverManager().install(),
             options=options
         )
     else:
         driver = webdriver.Chrome(
-            ChromeDriverManager(log_level=0).install()
+            ChromeDriverManager().install()
         )
 
     return driver
