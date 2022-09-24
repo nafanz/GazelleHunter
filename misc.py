@@ -63,6 +63,7 @@ question = {
 
 trackers = {
     'BroadcasTheNet': 'https://broadcasthe.net',
+    'D3si': 'https://d3si.net',
     'DICMusic': 'https://dicmusic.club',
     'Materialize': 'https://materialize.is'
 }
